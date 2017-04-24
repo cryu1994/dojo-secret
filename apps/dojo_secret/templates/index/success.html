@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{ request.session.name }} - Secret</title>
+    <title>{{ first_name }} - Secret</title>
 
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
@@ -26,12 +26,45 @@
             <a href="/logout" class='btn btn-primary pull-right'>Log Out</a>
           </div>
         </div>
-        <h1>Welcome {{ request.session.name }}</h1>
+        <h1>Welcome {{ first_name }}</h1>
         <br>
       </div>
       <br>
-      <div class="">
-
+      <!-- mesasge form -->
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 well">
+          <h3 class='post-head'>Post a secret message:</h3>
+          <form action="user/comments" method="post">
+            {% csrf_token %}
+            <div class='form-group'>
+              <textarea class='form-control' name="comment" placeholder="What's on your mind?"></textarea>
+            </div>
+            <div class='form-group'>
+              <input class='btn btn-success pull-right' type="submit" value="Post">
+            </div>
+          </form>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 well">
+          <h3>Most recent Secrets</h3>
+          <a href="/popular">Most popular secrets</a>
+          {% for comment in comments %}
+            <div class="row">
+              <div class="col-xs-11 col-xs-offset-1 well well-sm">
+                <p><b>{{comment.comment}} - {{ comment.num_likes }} Like(s)</b></a> - {{ comment.created_at }}</p>
+                {% if comment.id in arr%}
+                  <a href="/unlike/{{comment.id}}" class="btn btn-danger"><span class="glyphicon glyphicon-thumbs-down"></span></a>
+                    <a href="/like/{{comment.id}}" class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                    {% if comment.user.id == request.session.user_id %}
+                      <a href="/delete/{{ comment_id }}" class="btn btn-danger pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                    {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </body>

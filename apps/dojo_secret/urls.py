@@ -6,5 +6,8 @@ urlpatterns = [
     url(r'^$', views.index),
     url(r'^register$', views.register),
     url(r'^success$', views.success),
-    url(r'^user/login$', views.login)
+    url(r'^users/login$', views.login),
+    url(r'^user/comments$', views.comment),
+    url(r'^like/(?P<comment_id>\d+)', views.like),
+    url(r'^unlike/(?P<comment_id>\d+)', views.like),
 ]
